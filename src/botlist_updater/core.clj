@@ -1,4 +1,5 @@
 (ns botlist-updater.core
+  (:gen-class)
   (:import (java.util.concurrent Executors TimeUnit ScheduledExecutorService)
            (org.apache.logging.log4j LogManager Logger))
   (:require [clojure.edn :as edn]
@@ -22,7 +23,7 @@
 
 (defn post-update! [dbl-token bot-id]
   (let [guild-count (count @guilds)]
-    (.info logger ^CharSequence "Updating DBL stats, current guild count is {}" ^Object guild-count)
+    (.info logger "Updating DBL stats, current guild count is {}" (Integer/valueOf guild-count))
     (let [{:keys [status] :as response}
           @(http/post (url bot-id)
                 {:headers {"Content-Type" "application/json"
