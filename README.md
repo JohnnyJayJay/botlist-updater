@@ -1,10 +1,30 @@
 # botlist-updater
 
-A small application that periodically updates the server count of your Discord bot on [top.gg](https://top.gg).
+A small script that periodically updates the server count of your Discord bot on [top.gg](https://top.gg).
 
 ## Usage
 
-...
+```
+$ git clone https://github.com/JohnnyJayJay/botlist-updater
+```
+
+Then create a file `botlist-updater/config.edn` with the following contents:
+
+```clojure
+{:discord-token "YOUR-BOT-TOKEN"
+ :dbl-token "YOUR-top.gg-TOKEN"
+ :period 5} 
+```
+
+Your Discord bot token can be found on its [application page](https://discord.com/developers/applications). Your top.gg token can be found in the webhooks settings of your bot. The period denotes how many minutes to wait between updates.
+
+When you're done with the configuration, simply run 
+
+```
+$ docker-compose up
+```
+
+to start the app.
 
 ## License
 
