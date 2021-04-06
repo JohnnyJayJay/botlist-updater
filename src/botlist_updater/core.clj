@@ -46,10 +46,12 @@
     (.info logger "Logged in to Discord as {} ({})" (user-tag bot) bot-id)
     (letfn [(add-guild [_ {guild-id :id}]
               (swap! guilds conj guild-id))
+            (rem-guild [_ {:keys [unavailable] guild-id :id}]
+              (when-not unavailable
+                (swap! guilds disj guild-id)))
             (start-schedule [_ _]
               (when-not @scheduled
                 (.info logger "Beginning to post stats every {} minutes..." period)
                 (.scheduleAtFixedRate scheduler (partial post-update! dbl-token bot-id) period period TimeUnit/MINUTES)
                 (reset! scheduled true)))]
-      (message-pump! event-channel (partial dispatch-handlers {:guild-create [add-guild] :ready [start-schedule]})))))
-
+      (message-pump! event-channel (partial dispatch-handlers {:guild-create [add-guild] :guild-remove [rem-guild] :ready [start-schedule]})))))
